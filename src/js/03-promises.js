@@ -1,12 +1,11 @@
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const form = document.querySelector('.form');
-const formBtn = document.querySelector('button');
 
 function onFormSubmit(e) {
   e.preventDefault();
 
-  const formEl = event.currentTarget.elements;
+  const formEl = e.currentTarget.elements;
 
   let amount = Number(formEl.amount.value);
   let delay = Number(formEl.delay.value);

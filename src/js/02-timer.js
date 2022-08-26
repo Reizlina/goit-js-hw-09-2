@@ -3,10 +3,10 @@ import 'flatpickr/dist/flatpickr.min.css';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const startBtn = document.querySelector('[data-start]');
-const days = document.querySelector('[data-days]');
-const hours = document.querySelector('[data-hours]');
-const minutes = document.querySelector('[data-minutes]');
-const seconds = document.querySelector('[data-seconds]');
+const daysEl = document.querySelector('[data-days]');
+const hoursEl = document.querySelector('[data-hours]');
+const minutesEl = document.querySelector('[data-minutes]');
+const secondsEl = document.querySelector('[data-seconds]');
 
 startBtn.disabled = true;
 
@@ -36,19 +36,25 @@ function startTimer() {
 
   timerId = setInterval(() => {
     const delta = userDateInMilliseconds - Date.now();
-    const { days, hours, minutes, seconds } = convertMs(delta);
-    // for (value in convertMs(delta)) {
-    //   console.log(value);
-    //   value.textContent = addLeadingZero(value);
-    // }
-    daysEl.textContent = addLeadingZero(days);
-    hoursEl.textContent = addLeadingZero(hours);
-    minutesEl.textContent = addLeadingZero(minutes);
-    secondsEl.textContent = addLeadingZero(seconds);
+
+    renderTimer(convertMs(delta));
+
+    if (delta <= 0) {
+      Notify.success('YEY!');
+      renderTimer(convertMs(0));
+      clearInterval(timerId);
+    }
   }, 1000);
 }
 
 startBtn.addEventListener('click', startTimer);
+
+function renderTimer({ days, hours, minutes, seconds }) {
+  daysEl.textContent = addLeadingZero(days);
+  hoursEl.textContent = addLeadingZero(hours);
+  minutesEl.textContent = addLeadingZero(minutes);
+  secondsEl.textContent = addLeadingZero(seconds);
+}
 
 function addLeadingZero(value) {
   return String(value).padStart(2, '0');
