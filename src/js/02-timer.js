@@ -8,6 +8,13 @@ const hoursEl = document.querySelector('[data-hours]');
 const minutesEl = document.querySelector('[data-minutes]');
 const secondsEl = document.querySelector('[data-seconds]');
 
+const domElemConfig = {
+  days: daysEl,
+  hours: hoursEl,
+  minutes: minutesEl,
+  seconds: secondsEl,
+};
+
 startBtn.disabled = true;
 
 let timerId = null;
@@ -49,11 +56,14 @@ function startTimer() {
 
 startBtn.addEventListener('click', startTimer);
 
-function renderTimer({ days, hours, minutes, seconds }) {
-  daysEl.textContent = addLeadingZero(days);
-  hoursEl.textContent = addLeadingZero(hours);
-  minutesEl.textContent = addLeadingZero(minutes);
-  secondsEl.textContent = addLeadingZero(seconds);
+function setTextContent(domEl, text) {
+  domEl.textContent = addLeadingZero(text);
+}
+
+function renderTimer(allValues) {
+  for (const key in allValues) {
+    setTextContent(domElemConfig[key], allValues[key]);
+  }
 }
 
 function addLeadingZero(value) {
